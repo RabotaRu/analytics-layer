@@ -1,0 +1,11 @@
+{
+  "name": "@rabota/analytics-layer",
+  "version": "0.0.1",
+  "license": "MIT",
+  "repository": "https://github.com/RabotaRu/analytics-layer",
+  "homepage": "https://github.com/RabotaRu/analytics-layer/tree/master",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "index.js"
+}

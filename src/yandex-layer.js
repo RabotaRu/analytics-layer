@@ -1,8 +1,8 @@
 import { Layer } from "./layer";
 
-export class YandexLayer extends Layer {
+const YANDEX_LAYER_KEY = 'ym';
 
-  static YANDEX_LAYER_KEY = 'ym';
+export class YandexLayer extends Layer {
 
   /**
    * @param {Array<number>} counters
@@ -10,7 +10,7 @@ export class YandexLayer extends Layer {
   constructor (counters) {
     super( counters );
 
-    this.setLayer( YandexLayer.YANDEX_LAYER_KEY );
+    this.setLayer( YANDEX_LAYER_KEY );
     this.setProvider( 'yandex' );
   }
 

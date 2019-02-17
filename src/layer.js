@@ -160,6 +160,15 @@ export class Layer {
   }
 
   /**
+   * Analytics service options
+   *
+   * @return {Object}
+   */
+  get options () {
+    return this._options;
+  }
+
+  /**
    * @param args
    * @private
    */

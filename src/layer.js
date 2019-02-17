@@ -19,10 +19,18 @@ export class Layer {
   _counters = [];
 
   /**
-   * @param {Array<string|number>} counters
+   * @type {boolean}
+   * @private
    */
-  constructor (counters = []) {
+  _logging = false;
+
+  /**
+   * @param {Array<string|number>} counters
+   * @param {boolean} logging
+   */
+  constructor ({ counters = [], logging = false }) {
     this._counters = counters;
+    this._logging = logging;
   }
 
   /**
@@ -71,7 +79,9 @@ export class Layer {
       return;
     }
 
-    this._log( ...args );
+    if (this._logging) {
+      this._log( ...args );
+    }
 
     window[ this._layerName ]( ...args );
   }
@@ -81,6 +91,13 @@ export class Layer {
    */
   get provider () {
     return this._provider;
+  }
+
+  /**
+   * @return {Array<string|number>}
+   */
+  get counters () {
+    return this._counters;
   }
 
   /**

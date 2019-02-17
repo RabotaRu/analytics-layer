@@ -5,10 +5,10 @@ const YANDEX_LAYER_KEY = 'ym';
 export class YandexLayer extends Layer {
 
   /**
-   * @param {Array<number>} counters
+   * @param {Object} options
    */
-  constructor (counters) {
-    super( counters );
+  constructor (options) {
+    super( options );
 
     this.setLayer( YANDEX_LAYER_KEY );
     this.setProvider( 'yandex' );

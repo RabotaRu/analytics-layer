@@ -1,3 +1,5 @@
+import { capitalize } from "./utils";
+
 export class Layer {
 
   /**
@@ -13,10 +15,22 @@ export class Layer {
   _layerName = '';
 
   /**
+   * @type {string|number}
+   * @private
+   */
+  _counter = null;
+
+  /**
    * @type {Array<string|number>}
    * @private
    */
-  _counters = [];
+  _includedCounters = [];
+
+  /**
+   * @type {Object}
+   * @private
+   */
+  _options = {};
 
   /**
    * @type {boolean}
@@ -28,9 +42,11 @@ export class Layer {
    * @param {Array<string|number>} counters
    * @param {boolean} logging
    */
-  constructor ({ counters = [], logging = false }) {
-    this._counters = counters;
+  constructor ({ counter, includeCounters = [], logging = false, options = {} }) {
+    this._counter = counter;
+    this._includedCounters = includeCounters;
     this._logging = logging;
+    this._options = options;
   }
 
   /**
@@ -48,18 +64,41 @@ export class Layer {
   }
 
   /**
+   * @param {string|number} counterId
+   */
+  setCounter (counterId) {
+    this._counter = counterId;
+  }
+
+  /**
    * @param {Array<string|number>} counters
    */
-  setCounters (counters = []) {
-    this._counters = counters;
+  setIncludedCounters (counters = []) {
+    this._includedCounters = counters;
+  }
+
+  /**
+   * @param {boolean} logging
+   */
+  setLogging (logging = true) {
+    this._logging = logging;
+  }
+
+  /**
+   * @param {Object} options
+   */
+  setOptions (options = {}) {
+    this._options = options;
   }
 
   /**
    * @param {*} args
    */
   pushAll (...args) {
-    for (let i = 0; i < this._counters.length; ++i) {
-      this.pushTo( this._counters[ i ], ...args );
+    const counters = this.counters;
+
+    for (let i = 0; i < counters.length; ++i) {
+      this.pushTo( counters[ i ], ...args );
     }
   }
 
@@ -94,10 +133,24 @@ export class Layer {
   }
 
   /**
+   * @return {string|number}
+   */
+  get mainCounter () {
+    return this._counter;
+  }
+
+  /**
+   * @return {Array<string|number>}
+   */
+  get includedCounters () {
+    return this._includedCounters || [];
+  }
+
+  /**
    * @return {Array<string|number>}
    */
   get counters () {
-    return this._counters;
+    return [ this._counter, ...this._includedCounters ];
   }
 
   /**
@@ -106,17 +159,8 @@ export class Layer {
    */
   _log (...args) {
     console.log(
-      `[Analytic service: ${this._capitalize(this._provider)}]`,
+      `[Analytic service: ${capitalize( this._provider )}]`,
       ...args
     );
-  }
-
-  /**
-   * @param {string} text
-   * @return {string}
-   * @private
-   */
-  _capitalize (text) {
-    return text[ 0 ].toUpperCase() + text.substr( 1 );
   }
 }

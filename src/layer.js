@@ -42,7 +42,7 @@ export class Layer {
    * @param {Array<string|number>} counters
    * @param {boolean} logging
    */
-  constructor ({ counter, includeCounters = [], logging = false, options = {} }) {
+  constructor ({ counter, includeCounters = [], logging = false, options = {} } = {}) {
     this._counter = counter;
     this._includedCounters = includeCounters;
     this._logging = logging;
@@ -89,6 +89,12 @@ export class Layer {
    */
   setOptions (options = {}) {
     this._options = options;
+  }
+
+  /**
+   * @param {Array<string|number>?} counters
+   */
+  init (counters = []) {
   }
 
   /**

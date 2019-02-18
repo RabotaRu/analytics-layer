@@ -20,10 +20,13 @@ export class GoogleLayer extends Layer {
    * Init all yandex metrika counters
    *
    * @param {string|Array<string>} counters
+   * @param {Object} options
    */
-  init (counters = this.counters) {
+  init (counters = this.counters, options = {}) {
+    const mergedOptions = Object.assign( {}, this.options, options );
+
     [].concat( counters || [] ).forEach(id => {
-      this.push( 'config', id );
+      this.push( 'config', id, mergedOptions );
     });
   }
 

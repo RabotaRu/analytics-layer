@@ -19,13 +19,14 @@ export class YandexLayer extends Layer {
    * Init all yandex metrika counters
    *
    * @param {Array<string|number>} counters
+   * @param {Object} options
    */
-  init (counters = this.counters) {
-    const originalOptions = this.options;
+  init (counters = this.counters, options = {}) {
+    const mergedOptions = Object.assign( {}, this.options, options );
 
     counters.forEach(id => {
       const options = Object.assign(
-        {}, originalOptions, { id }
+        {}, mergedOptions, { id }
       );
 
       this.pushTo( id, 'init', options );

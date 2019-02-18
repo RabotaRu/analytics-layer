@@ -1,6 +1,7 @@
 import { Layer } from "./layer";
 
 const YANDEX_LAYER_KEY = 'ym';
+const YANDEX_PROVIDER_NAME = 'yandex';
 
 export class YandexLayer extends Layer {
 
@@ -11,7 +12,7 @@ export class YandexLayer extends Layer {
     super( params );
 
     this.setLayer( YANDEX_LAYER_KEY );
-    this.setProvider( 'yandex' );
+    this.setProvider( YANDEX_PROVIDER_NAME );
   }
 
   /**

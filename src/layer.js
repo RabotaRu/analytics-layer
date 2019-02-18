@@ -109,11 +109,11 @@ export class Layer {
   }
 
   /**
-   * @param {string|number} counterId
+   * @param {string|number|Array} counters
    * @param {*} args
    * @abstract
    */
-  pushTo (counterId, ...args) {
+  pushTo (counters, ...args) {
   }
 
   /**

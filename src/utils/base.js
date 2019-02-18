@@ -22,3 +22,44 @@ export function capitalize (text) {
 
   return text[ 0 ].toUpperCase() + text.substr( 1 );
 }
+
+/**
+ * @param {*} value
+ * @returns {boolean}
+ */
+export function isObject (value) {
+  return typeof value === 'object' && value !== null;
+}
+
+/**
+ * @param {Array} array
+ * @returns {*}
+ */
+export function first (array) {
+  if (!Array.isArray( array )) {
+    return array;
+  }
+
+  if (!array.length) {
+    return null;
+  }
+
+  return array[ 0 ];
+}
+
+
+/**
+ * @param {Array} array
+ * @returns {*}
+ */
+export function last (array) {
+  if (!Array.isArray( array )) {
+    return array;
+  }
+
+  if (!array.length) {
+    return null;
+  }
+
+  return array[ array.length - 1 ];
+}

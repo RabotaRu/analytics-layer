@@ -18,8 +18,8 @@ export class YandexLayer extends Layer {
   /**
    * Init all yandex metrika counters
    *
-   * @param {Array<string|number>} counters
-   * @param {Object} options
+   * @param {Array<string|number>?} counters
+   * @param {Object?} options
    */
   init (counters = this.counters, options = {}) {
     const mergedOptions = Object.assign( {}, this.options, options );

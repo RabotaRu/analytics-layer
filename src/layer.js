@@ -93,7 +93,7 @@ export class Layer {
 
   /**
    * @param {Array<string|number>?} counters
-   * @param {Object} options
+   * @param {Object?} options
    */
   init (counters = [], options = {}) {
   }

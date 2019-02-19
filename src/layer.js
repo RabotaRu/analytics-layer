@@ -158,6 +158,13 @@ export class Layer {
   }
 
   /**
+   * @returns {string}
+   */
+  get layerName () {
+    return this._layerName;
+  }
+
+  /**
    * @return {string|number}
    */
   get mainCounter () {

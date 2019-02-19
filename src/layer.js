@@ -94,8 +94,26 @@ export class Layer {
   /**
    * @param {Array<string|number>?} counters
    * @param {Object?} options
+   * @abstract
    */
   init (counters = [], options = {}) {
+  }
+
+  /**
+   * @param {string} eventName
+   * @param {*} params
+   * @param {*} args
+   */
+  event (eventName, params = {}, ...args) {
+  }
+
+  /**
+   * @param {string|number} counterId
+   * @param {string} eventName
+   * @param {*} params
+   * @param {*} args
+   */
+  eventTo (counterId, eventName, params = {}, ...args) {
   }
 
   /**

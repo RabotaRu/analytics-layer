@@ -34,6 +34,25 @@ export class YandexLayer extends Layer {
   }
 
   /**
+   * @param {string} eventName
+   * @param {*} params
+   * @param {*} args
+   */
+  event (eventName, params = {}, ...args) {
+    this.pushAll( 'reachGoal', eventName, params, ...args );
+  }
+
+  /**
+   * @param {number} counterId
+   * @param {string} eventName
+   * @param {*} params
+   * @param {*} args
+   */
+  eventTo (counterId, eventName, params = {}, ...args) {
+    this.pushTo( counterId, 'reachGoal', eventName, params, ...args );
+  }
+
+  /**
    * @param {number} counterId
    * @param {*} args
    */

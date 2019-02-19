@@ -31,6 +31,25 @@ export class GoogleLayer extends Layer {
   }
 
   /**
+   * @param {string} actionName
+   * @param {*} params
+   * @param {*} args
+   */
+  event (actionName, params = {}, ...args) {
+    this.pushAll( 'event', actionName, params, ...args );
+  }
+
+  /**
+   * @param {string} counterId
+   * @param {string} eventName
+   * @param {*} params
+   * @param {*} args
+   */
+  eventTo (counterId, eventName, params = {}, ...args) {
+    this.pushTo( counterId, 'event', eventName, params, ...args );
+  }
+
+  /**
    * @param {*} args
    */
   pushAll (...args) {

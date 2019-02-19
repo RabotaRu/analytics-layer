@@ -39,11 +39,7 @@ export class YandexLayer extends Layer {
    * @param {*} args
    */
   event (eventName, params = {}, ...args) {
-    const yandexParams = {
-      [eventName]: params
-    };
-
-    this.pushAll( 'reachGoal', eventName, yandexParams, ...args );
+    this.pushAll( 'reachGoal', eventName, params, ...args );
   }
 
   /**
@@ -53,11 +49,7 @@ export class YandexLayer extends Layer {
    * @param {*} args
    */
   eventTo (counterId, eventName, params = {}, ...args) {
-    const yandexParams = {
-      [eventName]: params
-    };
-
-    this.pushTo( counterId, 'reachGoal', eventName, yandexParams, ...args );
+    this.pushTo( counterId, 'reachGoal', eventName, params, ...args );
   }
 
   /**

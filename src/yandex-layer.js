@@ -76,7 +76,11 @@ export class YandexLayer extends Layer {
 
     Object.assign( options, opts );
 
-    this.pushTo( counterId, 'hit', toPath || '/', options );
+    const restArgs = Object.keys( options ).length > 0
+      ? [ options ]
+      : [];
+
+    this.pushTo( counterId, 'hit', toPath || '/', ...restArgs );
   }
 
   /**

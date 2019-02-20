@@ -53,6 +53,33 @@ export class YandexLayer extends Layer {
   }
 
   /**
+   * @param {string} toPath
+   * @param {string} fromPath
+   * @param {*} opts
+   */
+  hit (toPath, fromPath = null, opts = {}) {
+    this.each(id => this.hitTo( id, toPath, fromPath, opts ));
+  }
+
+  /**
+   * @param {string|number} counterId
+   * @param {string} toPath
+   * @param {string} fromPath
+   * @param {*} opts
+   */
+  hitTo (counterId, toPath, fromPath = null, opts = {}) {
+    const options = {};
+
+    if (fromPath) {
+      Object.assign(options, { referer: fromPath });
+    }
+
+    Object.assign( options, opts );
+
+    this.pushTo( counterId, 'hit', toPath || '/', options );
+  }
+
+  /**
    * @param {number} counterId
    * @param {*} args
    */

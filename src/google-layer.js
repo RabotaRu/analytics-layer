@@ -50,6 +50,36 @@ export class GoogleLayer extends Layer {
   }
 
   /**
+   * @param {string} toPath
+   * @param {string} fromPath
+   * @param {*} opts
+   */
+  hit (toPath, fromPath = null, opts = {}) {
+    const mergedOptions = Object.assign(
+      {}, opts, { 'page_path': toPath }
+    );
+
+    this.init( this.counters, mergedOptions );
+  }
+
+  /**
+   * @param {string|number} counterId
+   * @param {string} toPath
+   * @param {string} fromPath
+   * @param {*} opts
+   */
+  hitTo (counterId, toPath, fromPath = null, opts = {}) {
+    const mergedOptions = Object.assign(
+      {}, opts, { 'page_path': toPath }
+    );
+
+    this.init(
+      [].concat( counterId ),
+      mergedOptions
+    );
+  }
+
+  /**
    * @param {*} args
    */
   pushAll (...args) {

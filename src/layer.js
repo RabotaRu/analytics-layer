@@ -1,4 +1,4 @@
-import { capitalize } from "./utils";
+import { capitalize, noop } from "./utils";
 
 export class Layer {
 
@@ -117,14 +117,27 @@ export class Layer {
   }
 
   /**
+   * @param {string} toPath
+   * @param {string} fromPath
+   * @param {*} opts
+   */
+  hit (toPath, fromPath = null, opts = {}) {
+  }
+
+  /**
+   * @param {string|number} counterId
+   * @param {string} toPath
+   * @param {string} fromPath
+   * @param {*} opts
+   */
+  hitTo (counterId, toPath, fromPath = null, opts = {}) {
+  }
+
+  /**
    * @param {*} args
    */
   pushAll (...args) {
-    const counters = this.counters;
-
-    for (let i = 0; i < counters.length; ++i) {
-      this.pushTo( counters[ i ], ...args );
-    }
+    this.each(id => this.pushTo( id, ...args ));
   }
 
   /**
@@ -148,6 +161,17 @@ export class Layer {
     }
 
     window[ this._layerName ]( ...args );
+  }
+
+  /**
+   * @param {Function} fn
+   */
+  each (fn = noop) {
+    const counters = this.counters;
+
+    for (let i = 0; i < counters.length; ++i) {
+      fn && fn( counters[ i ] );
+    }
   }
 
   /**

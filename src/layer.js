@@ -207,8 +207,8 @@ export class Layer {
   /**
    * @param {Array<>} counters
    */
-  resolveCountersIds (counters = []) {
-    return [].concat( counters ).map(counter => {
+  resolveCountersIds (counters) {
+    return [].concat( counters || [] ).map(counter => {
       return isObject( counter )
         ? counter.id
         : counter;

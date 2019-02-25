@@ -1,4 +1,4 @@
-import { capitalize, noop } from "./utils";
+import { capitalize, isObject, noop } from "./utils";
 
 export class Layer {
 
@@ -15,22 +15,28 @@ export class Layer {
   _layerName = '';
 
   /**
-   * @type {string|number}
+   * @type {Array<*>}
    * @private
    */
-  _counter = null;
+  _staticCounters = null;
 
   /**
    * @type {Array<string|number>}
    * @private
    */
-  _includedCounters = [];
+  _staticCountersIds = null;
 
   /**
-   * @type {Object}
+   * @type {Array<*>}
    * @private
    */
-  _options = {};
+  _dynamicCounters = [];
+
+  /**
+   * @type {Array<string|number>}
+   * @private
+   */
+  _dynamicCountersIds = null;
 
   /**
    * @type {boolean}
@@ -42,11 +48,14 @@ export class Layer {
    * @param {Array<string|number>} counters
    * @param {boolean} logging
    */
-  constructor ({ counter, includeCounters = [], logging = false, options = {} } = {}) {
-    this._counter = counter;
-    this._includedCounters = includeCounters;
+  constructor ({ staticCounters, dynamicCounters = [], logging = false } = {}) {
+    this._staticCounters = staticCounters;
+    this._staticCountersIds = this.resolveCountersIds( staticCounters );
+
+    this._dynamicCounters = dynamicCounters;
+    this._dynamicCountersIds = this.resolveCountersIds( dynamicCounters );
+
     this._logging = logging;
-    this._options = options;
   }
 
   /**
@@ -64,17 +73,17 @@ export class Layer {
   }
 
   /**
-   * @param {string|number} counterId
+   * @param {Array<string|number>} counters
    */
-  setCounter (counterId) {
-    this._counter = counterId;
+  setStaticCounters (counters = []) {
+    this._staticCounters = counters;
   }
 
   /**
    * @param {Array<string|number>} counters
    */
-  setIncludedCounters (counters = []) {
-    this._includedCounters = counters;
+  setDynamicCounters (counters = []) {
+    this._dynamicCounters = counters;
   }
 
   /**
@@ -82,13 +91,6 @@ export class Layer {
    */
   setLogging (logging = true) {
     this._logging = logging;
-  }
-
-  /**
-   * @param {Object} options
-   */
-  setOptions (options = {}) {
-    this._options = options;
   }
 
   /**
@@ -134,10 +136,27 @@ export class Layer {
   }
 
   /**
+   * Set visit params for all counters
+   *
+   * @param {Object} params
+   */
+  setParams (params = {}) {
+  }
+
+  /**
+   * Set visit params for specific counter
+   *
+   * @param {string|number} counterId
+   * @param {Object} params
+   */
+  setParamsTo (counterId, params = {}) {
+  }
+
+  /**
    * @param {*} args
    */
   pushAll (...args) {
-    this.each(id => this.pushTo( id, ...args ));
+    this.eachIds(id => this.pushTo( id, ...args ));
   }
 
   /**
@@ -175,6 +194,28 @@ export class Layer {
   }
 
   /**
+   * @param {Function} fn
+   */
+  eachIds (fn = noop) {
+    const countersIds = this.countersIds;
+
+    for (let i = 0; i < countersIds.length; ++i) {
+      fn && fn( countersIds[ i ] );
+    }
+  }
+
+  /**
+   * @param {Array<>} counters
+   */
+  resolveCountersIds (counters = []) {
+    return [].concat( counters ).map(counter => {
+      return isObject( counter )
+        ? counter.id
+        : counter;
+    });
+  }
+
+  /**
    * @return {string}
    */
   get provider () {
@@ -189,33 +230,51 @@ export class Layer {
   }
 
   /**
-   * @return {string|number}
+   * @return {Array<*>}
    */
-  get mainCounter () {
-    return this._counter;
+  get staticCounters () {
+    return this._staticCounters;
   }
 
   /**
    * @return {Array<string|number>}
    */
-  get includedCounters () {
-    return this._includedCounters || [];
+  get staticCountersIds () {
+    return this._staticCountersIds;
+  }
+
+  /**
+   * @return {Array<*>}
+   */
+  get dynamicCounters () {
+    return this._dynamicCounters || [];
   }
 
   /**
    * @return {Array<string|number>}
+   */
+  get dynamicCountersIds () {
+    return this._dynamicCountersIds || [];
+  }
+
+  /**
+   * @return {Array<*>}
    */
   get counters () {
-    return [ this._counter, ...this._includedCounters ];
+    return [
+      ...this._staticCounters,
+      ...this._dynamicCounters
+    ];
   }
 
   /**
-   * Analytics service options
-   *
-   * @return {Object}
+   * @return {Array<string|number>}
    */
-  get options () {
-    return this._options;
+  get countersIds () {
+    return [
+      ...this._staticCountersIds,
+      ...this._dynamicCountersIds
+    ];
   }
 
   /**

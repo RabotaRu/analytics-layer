@@ -16,20 +16,13 @@ export class YandexLayer extends Layer {
   }
 
   /**
-   * Init all yandex metrika counters
+   * Initialize all yandex metrika counters
    *
-   * @param {Array<string|number>?} counters
-   * @param {Object?} options
+   * @param {Array<*>?} counters
    */
-  init (counters = this.counters, options = {}) {
-    const mergedOptions = Object.assign( {}, this.options, options );
-
-    counters.forEach(id => {
-      const options = Object.assign(
-        {}, mergedOptions, { id }
-      );
-
-      this.pushTo( id, 'init', options );
+  init (counters = this.counters) {
+    counters.forEach(counterOptions => {
+      this.pushTo( counterOptions.id, 'init', counterOptions );
     });
   }
 
@@ -58,7 +51,7 @@ export class YandexLayer extends Layer {
    * @param {*} opts
    */
   hit (toPath, fromPath = null, opts = {}) {
-    this.each(id => this.hitTo( id, toPath, fromPath, opts ));
+    this.eachIds(id => this.hitTo( id, toPath, fromPath, opts ));
   }
 
   /**
@@ -81,6 +74,21 @@ export class YandexLayer extends Layer {
       : [];
 
     this.pushTo( counterId, 'hit', toPath || '/', ...restArgs );
+  }
+
+  /**
+   * @param {Object} params
+   */
+  setParams (params = {}) {
+    this.eachIds(id => this.setParamsTo( id, params ));
+  }
+
+  /**
+   * @param {string|number} counterId
+   * @param {Object} params
+   */
+  setParamsTo (counterId, params = {}) {
+    this.pushTo( counterId, 'params', params );
   }
 
   /**

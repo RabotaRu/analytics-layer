@@ -102,6 +102,14 @@ export class YandexLayer extends Layer {
    * @param {*} args
    */
   pushTo (counterId, ...args) {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    if (this._logging) {
+      this._log( counterId, ...args );
+    }
+
     const counter = this._getMetrikaInstance( counterId );
     const [ fnName, ...rest ] = args;
     counter[ fnName ]( ...rest );

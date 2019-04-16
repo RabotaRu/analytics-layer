@@ -1,6 +1,6 @@
 import { Layer } from "./layer";
 
-const YANDEX_LAYER_KEY = 'ym';
+const YANDEX_LAYER_KEY = 'Ya';
 const YANDEX_PROVIDER_NAME = 'yandex';
 
 export class YandexLayer extends Layer {

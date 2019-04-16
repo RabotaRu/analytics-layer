@@ -21,9 +21,13 @@ export class YandexLayer extends Layer {
    * @param {Array<*>?} counters
    */
   init (counters = this.counters) {
-    counters.forEach(counterOptions => {
-      this.pushTo( counterOptions.id, 'init', counterOptions );
-    });
+    try {
+      counters.forEach(counterOptions => {
+        window[ `yaCounter${counterOptions.id}` ] = new Ya.Metrika2( counterOptions );
+      });
+    } catch (e) {
+      console.warn( e );
+    }
   }
 
   /**
@@ -32,7 +36,9 @@ export class YandexLayer extends Layer {
    * @param {*} args
    */
   event (eventName, params = {}, ...args) {
-    this.pushAll( 'reachGoal', eventName, params, ...args );
+    this.eachIds(id => {
+      this.eventTo( id, eventName, params, ...args );
+    });
   }
 
   /**
@@ -96,6 +102,17 @@ export class YandexLayer extends Layer {
    * @param {*} args
    */
   pushTo (counterId, ...args) {
-    this.push( counterId, ...args );
+    const counter = this._getMetrikaInstance( counterId );
+    const [ fnName, ...rest ] = args;
+    counter[ fnName ]( ...rest );
+  }
+
+  /**
+   * @param id
+   * @returns {*}
+   * @private
+   */
+  _getMetrikaInstance (id) {
+    return window[ `yaCounter${id}` ];
   }
 }

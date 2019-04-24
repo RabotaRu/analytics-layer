@@ -1,6 +1,6 @@
 import { Layer } from "./layer";
 
-const YANDEX_LAYER_KEY = 'Ya';
+const YANDEX_LAYER_KEY = 'ym';
 const YANDEX_PROVIDER_NAME = 'yandex';
 
 export class YandexLayer extends Layer {
@@ -21,13 +21,9 @@ export class YandexLayer extends Layer {
    * @param {Array<*>?} counters
    */
   init (counters = this.counters) {
-    try {
-      counters.forEach(counterOptions => {
-        window[ `yaCounter${counterOptions.id}` ] = new Ya.Metrika2( counterOptions );
-      });
-    } catch (e) {
-      console.warn( e );
-    }
+    counters.forEach(counterOptions => {
+      this.pushTo( counterOptions.id, 'init', counterOptions );
+    });
   }
 
   /**
@@ -36,9 +32,7 @@ export class YandexLayer extends Layer {
    * @param {*} args
    */
   event (eventName, params = {}, ...args) {
-    this.eachIds(id => {
-      this.eventTo( id, eventName, params, ...args );
-    });
+    this.pushAll( 'reachGoal', eventName, params, ...args );
   }
 
   /**
@@ -102,25 +96,6 @@ export class YandexLayer extends Layer {
    * @param {*} args
    */
   pushTo (counterId, ...args) {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    if (this._logging) {
-      this._log( counterId, ...args );
-    }
-
-    const counter = this._getMetrikaInstance( counterId );
-    const [ fnName, ...rest ] = args;
-    counter[ fnName ]( ...rest );
-  }
-
-  /**
-   * @param id
-   * @returns {*}
-   * @private
-   */
-  _getMetrikaInstance (id) {
-    return window[ `yaCounter${id}` ];
+    this.push( counterId, ...args );
   }
 }

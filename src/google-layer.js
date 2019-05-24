@@ -17,14 +17,15 @@ export class GoogleLayer extends Layer {
   }
 
   /**
-   * Init all yandex metrika counters
+   * Init all GA counters
    *
    * @param {string|Array<*>?} counters
+   * @param {*} options
    */
-  init (counters = this.counters) {
+  init (counters = this.counters, options = {}) {
     const ids = this.resolveCountersIds( counters );
 
-    [].concat( ids || [] ).forEach(id => this.push( 'config', id ));
+    [].concat( ids || [] ).forEach(id => this.push( 'config', id, options ));
   }
 
   /**
@@ -53,7 +54,7 @@ export class GoogleLayer extends Layer {
    */
   hit (toPath, fromPath = null, opts = {}) {
     const mergedOptions = Object.assign(
-      {}, opts, { 'page_path': toPath }
+      {}, opts, { 'page_path': toPath || '/' }
     );
 
     this.init( this.counters, mergedOptions );
@@ -67,7 +68,7 @@ export class GoogleLayer extends Layer {
    */
   hitTo (counterId, toPath, fromPath = null, opts = {}) {
     const mergedOptions = Object.assign(
-      {}, opts, { 'page_path': toPath }
+      {}, opts, { 'page_path': toPath || '/' }
     );
 
     this.init(

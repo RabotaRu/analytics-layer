@@ -24,6 +24,13 @@ export class GoogleLayer extends Layer {
    */
   init (counters = this.counters, options = {}) {
     const ids = this.resolveCountersIds( counters );
+    const defaultOptions = {
+      'custom_map': {
+        'dimension0': 'client_id'
+      }
+    };
+
+    options = Object.assign({}, options, defaultOptions);
 
     [].concat( ids || [] ).forEach(id => this.push( 'config', id, options ));
   }

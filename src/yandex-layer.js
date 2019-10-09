@@ -4,7 +4,6 @@ const YANDEX_LAYER_KEY = 'ym';
 const YANDEX_PROVIDER_NAME = 'yandex';
 
 export class YandexLayer extends Layer {
-
   /**
    * @param {Object} params
    */
@@ -43,37 +42,6 @@ export class YandexLayer extends Layer {
    */
   eventTo (counterId, eventName, params = {}, ...args) {
     this.pushTo( counterId, 'reachGoal', eventName, params, ...args );
-  }
-
-  /**
-   * @param {string} toPath
-   * @param {string} fromPath
-   * @param {*} opts
-   */
-  hit (toPath, fromPath = null, opts = {}) {
-    this.eachIds(id => this.hitTo( id, toPath, fromPath, opts ));
-  }
-
-  /**
-   * @param {string|number} counterId
-   * @param {string} toPath
-   * @param {string} fromPath
-   * @param {*} opts
-   */
-  hitTo (counterId, toPath, fromPath = null, opts = {}) {
-    const options = {};
-
-    if (fromPath) {
-      Object.assign(options, { referer: fromPath });
-    }
-
-    Object.assign( options, opts );
-
-    const restArgs = Object.keys( options ).length > 0
-      ? [ options ]
-      : [];
-
-    this.pushTo( counterId, 'hit', toPath || '/', ...restArgs );
   }
 
   /**

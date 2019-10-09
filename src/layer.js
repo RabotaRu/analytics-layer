@@ -124,6 +124,9 @@ export class Layer {
    * @param {*} opts
    */
   hit (toPath, fromPath = null, opts = {}) {
+    this.eachIds(id => {
+      this.hitTo( id, toPath, fromPath, opts )
+    });
   }
 
   /**
@@ -133,6 +136,19 @@ export class Layer {
    * @param {*} opts
    */
   hitTo (counterId, toPath, fromPath = null, opts = {}) {
+    const options = {};
+
+    if (fromPath) {
+      Object.assign( options, { referer: fromPath } );
+    }
+
+    Object.assign( options, opts );
+
+    const restArgs = Object.keys( options ).length > 0
+      ? [ options ]
+      : [];
+
+    this.pushTo( counterId, 'hit', toPath || '/', ...restArgs );
   }
 
   /**
@@ -160,11 +176,11 @@ export class Layer {
   }
 
   /**
-   * @param {string|number|Array} counters
+   * @param {string|number} counterId
    * @param {*} args
    * @abstract
    */
-  pushTo (counters, ...args) {
+  pushTo (counterId, ...args) {
   }
 
   /**
